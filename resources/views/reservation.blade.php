@@ -13,7 +13,7 @@
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">Attendance</li>
+                            <li class="breadcrumb-item active">Reservation</li>
                         </ol>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
         <section class="content">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Attendance</h3>
+                    <h3 class="card-title">Reservation</h3>
                     <div class="card-tools">
                         <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                             <i class="fas fa-minus"></i>
@@ -39,20 +39,24 @@
                             <tr>
                                 <th class="project-state">Name</th>
                                 <th class="project-state">Email</th>
+                                <th class="project-state">Reservation date</th>
+                                <th class="project-state">Reservation time</th>
                                 <th class="project-state"> Training session name</th>
-                                <th class="project-state">Attendance time</th>
-                                <th class="project-state">Attendance date</th>
+                                <th class="project-state"> Training session date</th>
+                             
 
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($attendances as $attendance)
-                                <tr id="did{{ $attendance->id }}">
-                                    <td class="project-state">{{ $attendance->name }}</td>
-                                    <td class="project-state">{{ $attendance->email }} </td>
-                                    <td class="project-state">{{ $attendance->training_session_name}} </td>
-                                    <td class="project-state">{{ $attendance->attendance_time }} </td>
-                                    <td class="project-state">{{ Carbon::parse($attendance->attendance_at)->format('Y-m-d') }} </td>
+                            @foreach ($reservations as $reservation)
+                                <tr id="did{{ $reservation->id }}">
+                                    <td class="project-state">{{ $reservation->name }}</td>
+                                    <td class="project-state">{{ $reservation->email }} </td>
+                                    <td class="project-state">{{ Carbon::parse($reservation->reservation_at)->format('Y-m-d') }} </td>
+                                    <td class="project-state">{{ $reservation->reservation_time }} </td>
+                                    <td class="project-state">{{ $reservation->training_session_name}} </td>
+                                    <td class="project-state">{{ $reservation->training_session_date}} </td>
+                                  
                                  
                                 </tr>
                             @endforeach

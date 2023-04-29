@@ -8,11 +8,11 @@
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>{{ $revenueInDollars }}</h3>
-                                <p>Total Revenue</p>
+                                <h3>{{ $trainingSessions }}</h3>
+                                <p>Today Training Sessions</p>
                             </div>
                             <div class="icon">
-                                <i class="fas fa-dollar-sign text-white" style="font-size: 50px !important"></i>
+                                <i class="fas fa-basketball-ball text-white" style="font-size: 50px !important"></i>
                             </div>
                         </div>
                     </div>

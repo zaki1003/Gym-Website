@@ -154,16 +154,7 @@ body {
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu"
                     data-accordion="false">
-                    @role('admin')
-                    {{-- # ======================================= # Revenue # ======================================= # --}}
-                    <li class="nav-item">
-                        <a href="/" class="nav-link">
-                            <i class="nav-icon fas fa-dollar-sign"></i>
-                            <p>Revenue</p>
-                        </a>
-                    </li>
-      
-                 
+                    @role('admin')        
                     {{-- # ======================================= # Coaches # ======================================= # --}}
                     <li class="nav-item">
                         <a href="#" class="nav-link">
@@ -215,12 +206,22 @@ body {
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
+                            @role('admin')
                             <li class="nav-item">
-                                <a href="{{ route('TrainingSessions.listSessions') }}" class="nav-link">
+                                <a href="{{ route('TrainingSessions.listSessionsAdmin') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p> All Sessions </p>
                                 </a>
                             </li>
+                            @endrole
+                            @role('coach')
+                            <li class="nav-item">
+                                <a href="{{ route('TrainingSessions.listSessionsCoach') }}" class="nav-link">
+                                    <i class="far fa-circle nav-icon"></i>
+                                    <p> All Sessions </p>
+                                </a>
+                            </li>
+                            @endrole
                             @role('admin|coach')
                             <li class="nav-item">
                                 <a href="{{ route('TrainingSessions.training_session') }}" class="nav-link">
@@ -233,16 +234,17 @@ body {
                     </li>
                  
                     @role('admin')
-                    {{-- # ======================================= # Attendance # ======================================= # --}}
+                    {{-- # ======================================= # Reservations # ======================================= # --}}
               
                     <li class="nav-item">
-                        <a href="/listHistory" class="nav-link">
+                        <a href="/listReservationsAdmin" class="nav-link">
                             <i class="nav-icon fas fa-book"></i>
-                            <p> Attendance </p>
+                            <p> Reservations </p>
                             </p>
                         </a>
                         </a>
                     </li>
+               
                     {{-- # ======================================= # Banned Users # ======================================= # --}}
                     <li class="nav-item">
                         <a href="{{ route('user.listBanned') }}" class="nav-link">
@@ -253,7 +255,16 @@ body {
 
                     @endrole
 
-
+                    @role('coach')
+                    <li class="nav-item">
+                        <a href="/listReservationsCoach" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p> Reservations </p>
+                            </p>
+                        </a>
+                        </a>
+                    </li>
+                    @endrole
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

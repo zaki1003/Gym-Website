@@ -39,6 +39,7 @@
                                 <th>ID</th>
                                 <th>Session Name</th>
                                 <th>Day</th>
+                                <th>Coach Name</th>
                                 <th>Starts At</th>
                                 <th>Finishes At</th>
                                 <th>Actions </th>
@@ -51,17 +52,18 @@
                                     <td>{{ $trainingSession->id }}</td>
                                     <td>{{ $trainingSession->name }} </td>
                                     <td>{{ $trainingSession->day }} </td>
+                                    <td>{{ $trainingSession->coach_name}} </td>
                                     <td>{{ $trainingSession->starts_at }}</td>
                                     <td>{{ $trainingSession->finishes_at }}</td>
 
                                     <td class="project-actions text-center">
                                         <a class="btn btn-info btn-sm"
-                                            href="{{ route('TrainingSessions.show_training_session', $trainingSession['id']) }}">
+                                            href="{{ route('TrainingSessions.show_training_session', $trainingSession->id ) }}">
 
                                             <i class="fa fa-eye"></i>
                                         </a>
                                         <a class="btn btn-warning btn-sm text-white"
-                                            href="{{ route('TrainingSessions.edit_training_session', $trainingSession['id']) }}">
+                                            href="{{ route('TrainingSessions.edit_training_session',$trainingSession->id ) }}">
                                             <i class="fas fa-pencil-alt"></i></a>
 
                                         <a href="javascript:void(0)" onclick="deleteSession({{ $trainingSession->id }})"

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateRevenuesTable extends Migration
+class CreateReservationTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,9 @@ class CreateRevenuesTable extends Migration
      */
     public function up()
     {
-        Schema::create('revenues', function (Blueprint $table) {
+        Schema::create('reservations', function (Blueprint $table) {
             $table->id();
-            $table->string('price');
-            $table->string('payment_id');
-            $table->enum('statuses',['paid','pend','refund'])->default('pend');
-            $table->string('visa_number');
-            $table->string('payment_method');
+            $table->timestamp('reservation_at')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -32,6 +28,6 @@ class CreateRevenuesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('revenue');
+        Schema::dropIfExists('reservation');
     }
 }

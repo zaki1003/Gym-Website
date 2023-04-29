@@ -20,9 +20,37 @@ class TrainingController extends Controller
     #=======================================================================================#
     #			                             index                                         	#
     #=======================================================================================#
-    public function index()
+    public function indexAdmin()
     {
-        $trainingSessions = TrainingSession::all();
+
+        
+        $trainingSessions = DB::table('training_sessions')
+            ->join('training_session_user', 'training_session_user.training_session_id', '=', 'training_sessions.id')
+            ->join('users', 'users.id', '=', 'training_session_user.user_id')
+         
+           ->select('users.name as coach_name', 'training_sessions.*')
+            ->get();
+    
+
+    //    $trainingSessions = TrainingSession::all();
+        if (count($trainingSessions) <= 0) {
+            return view('empty');
+        }
+        return view('TrainingSessions.listSessions', ['trainingSessions' => $trainingSessions]);
+    }
+    public function indexCoach()
+    {
+
+        
+        $trainingSessions = DB::table('training_sessions')
+            ->join('training_session_user', 'training_session_user.training_session_id', '=', 'training_sessions.id')
+            ->join('users', 'users.id', '=', 'training_session_user.user_id')
+            ->where('users.id',Auth::user()->id)
+           ->select('users.name as coach_name', 'training_sessions.*')
+            ->get();
+    
+
+    //    $trainingSessions = TrainingSession::all();
         if (count($trainingSessions) <= 0) {
             return view('empty');
         }

@@ -25,7 +25,7 @@ class PermissionsSeeder extends Seeder
         #=======================================================================================#
         #			                         create permissions                              	#
         #=======================================================================================#
-        $loginPermission = Permission::create(['name' => 'login']);
+   /*     $loginPermission = Permission::create(['name' => 'login']);
         $updateProfilePermission = Permission::create(['name' => 'updateProfile']);
         $showTrainingSessionsPermission = Permission::create(['name' => 'showTrainingSessions']);
         $showAttendanceHistoryPermission = Permission::create(['name' => 'showAttendanceHistory']);
@@ -42,7 +42,7 @@ class PermissionsSeeder extends Seeder
         $crudAttendancePermission = Permission::create(['name' => 'crudAttendance']);
         $crudTrainingSessionsPermission = Permission::create(['name' => 'crudTrainingSessions']);
 
-        $crudTrainingPackagePermission = Permission::create(['name' => 'crudTrainingPackage']);
+        $crudTrainingPackagePermission = Permission::create(['name' => 'crudTrainingPackage']);*/
         #=======================================================================================#
         #			                            create roles                                  	#
         #=======================================================================================#
@@ -52,7 +52,7 @@ class PermissionsSeeder extends Seeder
         #=======================================================================================#
         #			                      give admin permissions                             	#
         #=======================================================================================#
-        $adminRole->syncPermissions([
+   /*     $adminRole->syncPermissions([
             $loginPermission,
             $updateProfilePermission,
             $showTrainingSessionsPermission,
@@ -89,6 +89,6 @@ class PermissionsSeeder extends Seeder
             $loginPermission,
             $updateProfilePermission,
             $showTrainingSessionsPermission,
-        ]);
+        ]);*/
     }
 }

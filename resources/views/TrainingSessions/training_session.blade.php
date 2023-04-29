@@ -54,6 +54,8 @@
                                 <label for="name">Day</label>
                                 <input type="date" id="name" class="form-control" name="day">
                             </div>
+                         
+                         @role('admin')
                             <div class="form-group">
                                 <label for="coach">Coach</label>
                                 <select id="coach" class="form-control custom-select" name="user_id" >
@@ -62,6 +64,21 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @endrole
+                            @role('coach')
+               
+                            <div class="form-group">
+                                <label for="coach">Coach</label>
+                                <select id="coach" class="form-control custom-select" name="user_id" >
+                                    
+                                   <option value="{{ auth()->user()->id }}"> {{  auth()->user()->name  }}</option>
+                                  
+                                </select>
+                            </div>
+
+
+             
+                            @endrole
                             <div class="form-group">
                                 <label for="starts_at">Starts At</label>
                                 <input type="time" id="starts_at" class="form-control"  name="starts_at">

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 
 
-use App\Models\Revenue;
 use App\Models\TrainingSession;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Auth;
 class WelcomeController extends Controller
 {
     private $userID, $userRole,
-        $coaches = 0, $users = 0, $totalRevenue = 0, $revenueInDollars = 0;
+        $coaches = 0, $users = 0, $trainingSessions = 0;
     #=======================================================================================#
     #			                               index                                       	#
     #=======================================================================================#
@@ -23,59 +23,21 @@ class WelcomeController extends Controller
         $this->userData = User::find($this->userID);
         $this->userRole = Auth::user()->getRoleNames();
 
+        $todayDay = Carbon::now();
+         
 
         switch ($this->userRole['0']) {
             case 'admin':
-                $this->totalRevenue = (Revenue::sum('price')) / 100;
-                $this->revenueInDollars = number_format($this->totalRevenue, 2, ',', '.');
-       
+
+
 
                 $this->coaches = count(User::role('coach')->get());
                 $this->users = count(User::role('user')->get());
-                break;
-            case 'cityManager':
-                //get all user in cityManager city
-                $userOfCity = City::find($this->userData['city_id'])->users;
+                $this->trainingSessions =  count(TrainingSession::where('day', '=', $todayDay->toDateString())->get());
 
-                //get totalRevenue in cityManager city
-                foreach ($userOfCity as $usersID) {
-                    $this->totalRevenue += (Revenue::where('user_id', '=', $usersID['id'])->sum('price')) / 100;
-                }
-                $this->revenueInDollars = number_format($this->totalRevenue, 2, ',', '.');
-
-                $this->gyms = count(Gym::where('city_id', '=', $this->userData['city_id'])->get());
-
-                //get users by type in cityManager city
-                foreach ($userOfCity as $singleUser) {
-                    if ($singleUser->hasRole('gymManager')) {
-                        $this->gymsManagers++;
-                    } elseif ($singleUser->hasRole('coach')) {
-                        $this->coaches++;
-                    } elseif ($singleUser->hasRole('user')) {
-                        $this->users++;
-                    }
-                }
 
                 break;
-            case 'gymManager':
-                //get all user in gymManager gym
-                $userOfGym = Gym::find($this->userData['gym_id'])->users;
-
-                //get totalRevenue in gymManager gyms
-                foreach ($userOfGym as $usersID) {
-                    $this->totalRevenue += (Revenue::where('user_id', '=', $usersID['id'])->sum('price')) / 100;
-                }
-                $this->revenueInDollars = number_format($this->totalRevenue, 2, ',', '.');
-
-                //get users by type in gymManager gym
-                foreach ($userOfGym as $singleUser) {
-                    if ($singleUser->hasRole('coach')) {
-                        $this->coaches++;
-                    } elseif ($singleUser->hasRole('user')) {
-                        $this->users++;
-                    }
-                }
-                break;
+     
             case 'coach':
                 $userOfGym = User::with(['trainingSessions'])->where('id', $this->userID)->first();
                 if (count($userOfGym->trainingSessions) <= 0) { //for empty statement
@@ -91,7 +53,7 @@ class WelcomeController extends Controller
       
             'coaches' => $this->coaches,
             'users' => $this->users,
-            'revenueInDollars' => $this->revenueInDollars,
+            'trainingSessions' => $this->trainingSessions,
         ]);
     }
 }

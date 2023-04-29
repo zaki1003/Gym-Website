@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Attendance extends Model
+class Reservation extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -14,7 +14,7 @@ class Attendance extends Model
     #			                    To allow insert in table                              	#
     #=======================================================================================#
     protected $fillable = [
-        'attendance_at',
+        'reservation_at',
         'user_id',
         'training_session_id',
     ];

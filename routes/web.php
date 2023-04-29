@@ -1,20 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\GymController;
 use App\Http\Controllers\CoachController;
 use App\Http\Controllers\TrainingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
-
-use App\Http\Controllers\GymManagerController;
 use App\Http\Controllers\AllUsersController;
-
 use App\Http\Controllers\EmptyController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\StripeController;
 use App\Http\Controllers\TrainingPackagesController;
-use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\ReservationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,16 +61,18 @@ Route::group(['middleware' => ['auth', 'logs-out-banned-user']], function () {
 });
 
 
+
 #=======================================================================================#
 #			                         Training Routes                                  	#
 #=======================================================================================#
-Route::get('/TrainingSessions/index', [TrainingController::class, 'index'])->name('TrainingSessions.listSessions')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::get('/TrainingSessions/create_session', [TrainingController::class, 'create'])->name('TrainingSessions.training_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::post('/TrainingSessions/sessions', [TrainingController::class, 'store'])->name('TrainingSessions.store')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::get('/TrainingSessions/sessions/{session}', [TrainingController::class, 'show'])->name('TrainingSessions.show_training_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::get('/TrainingSessions/{session}/edit', [TrainingController::class, 'edit'])->name('TrainingSessions.edit_training_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::delete('/TrainingSessions/{session}  ', [TrainingController::class, 'deleteSession'])->name('TrainingSessions.delete_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::put('/TrainingSessions/{session}', [TrainingController::class, 'update'])->name('TrainingSessions.update_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
+Route::get('/TrainingSessions/indexAdmin', [TrainingController::class, 'indexAdmin'])->name('TrainingSessions.listSessionsAdmin')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
+Route::get('/TrainingSessions/indexCoach', [TrainingController::class, 'indexCoach'])->name('TrainingSessions.listSessionsCoach')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:coach');
+Route::get('/TrainingSessions/create_session', [TrainingController::class, 'create'])->name('TrainingSessions.training_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
+Route::post('/TrainingSessions/sessions', [TrainingController::class, 'store'])->name('TrainingSessions.store')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
+Route::get('/TrainingSessions/sessions/{session}', [TrainingController::class, 'show'])->name('TrainingSessions.show_training_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
+Route::get('/TrainingSessions/{session}/edit', [TrainingController::class, 'edit'])->name('TrainingSessions.edit_training_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
+Route::delete('/TrainingSessions/{session}  ', [TrainingController::class, 'deleteSession'])->name('TrainingSessions.delete_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
+Route::put('/TrainingSessions/{session}', [TrainingController::class, 'update'])->name('TrainingSessions.update_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
 
 
 #=======================================================================================#
@@ -116,7 +114,9 @@ Route::controller(AllUsersController::class)->group(function () {
 #=======================================================================================#
 #			                           Attendance route                                  #
 #=======================================================================================#
-Route::get('/listHistory', [AttendanceController::class, 'listHistory'])->name('attendance')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
+Route::get('/listReservationsAdmin', [ReservationController::class, 'listReservationsAdmin'])->name('reservation')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
+Route::get('/listReservationsCoach', [ReservationController::class, 'listReservationsCoach'])->name('reservation')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:coach');
+
 #=======================================================================================#
 #			                            empty statement                                 #
 #=======================================================================================#

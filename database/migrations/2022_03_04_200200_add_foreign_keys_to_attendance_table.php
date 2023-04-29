@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::table('attendances', function (Blueprint $table) {
+        Schema::table('reservations', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onUpdate('cascade')->onDelete('cascade');
 
@@ -29,7 +29,7 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::table('attendances', function (Blueprint $table) {
+        Schema::table('reservations', function (Blueprint $table) {
             //
         });
     }
