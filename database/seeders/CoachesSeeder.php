@@ -22,6 +22,7 @@ class CoachesSeeder extends Seeder
         //give them role => coach
         foreach ($coachesManager as $coachRole) {
             $coachRole->assignRole('coach');
+            $coachRole->subscription_start = NULL;
         }
     }
 }

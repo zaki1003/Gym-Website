@@ -78,21 +78,11 @@ Route::put('/TrainingSessions/{session}', [TrainingController::class, 'update'])
 
 
 #=======================================================================================#
-#			                            Packages Routes                                 	#
-#=======================================================================================#
-Route::get('/trainingPackeges/index', [TrainingPackagesController::class, 'index'])->name('trainingPackeges.listPackeges')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::get('/trainingPackeges/create_package', [TrainingPackagesController::class, 'create'])->name('trainingPackeges.creatPackege')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::post('/trainingPackeges/package', [TrainingPackagesController::class, 'store'])->name('trainingPackeges.store')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::get('/trainingPackeges/package/{session}', [TrainingPackagesController::class, 'show'])->name('trainingPackeges.show_training_package')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::get('/trainingPackeges/{package}/edit', [TrainingPackagesController::class, 'edit'])->name('trainingPackeges.editPackege')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::delete('/trainingPackeges/{package}  ', [TrainingPackagesController::class, 'deletePackage'])->name('trainingPackeges.delete_package')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::put('/trainingPackeges/{package}', [TrainingPackagesController::class, 'update'])->name('trainingPackeges.update_package')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-#=======================================================================================#
 #			                            User Routes                                   	#
 #=======================================================================================#
 Route::get('/user/{id}', [UserController::class, 'show_profile'])->name('user.admin_profile')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::get('/user/{users}/edit-profile', [UserController::class, 'edit_profile'])->name('user.edit_admin_profile')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-Route::put('/user/{users}', [UserController::class, 'update'])->name('user.update')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
+Route::get('/user/{user}/edit-profile', [UserController::class, 'edit_profile'])->name('user.edit_user')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
+Route::put('/user/{user}', [UserController::class, 'update'])->name('user.update')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
 Route::get('/user', [UserController::class, 'index'])->name('layouts.user-layout')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
 #=======================================================================================#
 #			                            Auth Routes                                  	#
@@ -120,8 +110,6 @@ Route::controller(AllUsersController::class)->group(function () {
     Route::get('/allUsers/list', 'list')->name('allUsers.list')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
     Route::get('/allUsers/show/{id}', 'show')->name('allUsers.show')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
     Route::delete('/allUsers/{id}', 'deleteUser')->name('allUsers.delete')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-    Route::get('/allUsers/addGym/{id}', 'addGym')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
-    Route::post('/allUsers/submitGym/{id}', 'submitGym')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
 });
 
 

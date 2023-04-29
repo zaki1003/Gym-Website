@@ -20,15 +20,12 @@ class Revenue extends Model
         'visa_number',
         'payment_method',
         'user_id',
-        'training_package_id',
+
     ];
     public function user()
     {
         return $this->belongsTo(User::class);
     }
 
-    public function trainingPackage()
-    {
-        return $this->belongsTo(TrainingPackage::class);
-    }
+ 
 }

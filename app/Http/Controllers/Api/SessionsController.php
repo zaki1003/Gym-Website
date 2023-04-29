@@ -28,11 +28,11 @@ class SessionsController extends Controller
         ];
     }
 
-    public function remaining_training_sessions()
+    public function get_subscription_dates()
     {
         return [
-            'total_sessions' => Auth()->user()->total_sessions,
-            'remain_session' => Auth()->user()->remain_session
+            'subscription_start' => Auth()->user()->subscription_start,
+            'subscription_end' => Auth()->user()->subscription_end
         ];
     }
 

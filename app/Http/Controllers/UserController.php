@@ -62,8 +62,8 @@ class UserController extends Controller
     #=======================================================================================#
  public function edit_profile($user_id)
     {
-        return view('user.edit_admin_profile', [
-            'users' => User::find($user_id),
+        return view('allUsers.edit_user', [
+            'user' => User::find($user_id),
         ]);
     }
  
@@ -78,25 +78,61 @@ class UserController extends Controller
     #=======================================================================================#
     #			                             update                                        	#
     #=======================================================================================#
-    public function update(StoreRequest $request,$user_id)
+  
+
+    public function update(Request $request, $id)
     {
-        $user = User::find($user_id);
+
+        $user = User::find($id);
+        $validated = $request->validate([
+            'name' => 'required|max:50',
+            'email' => 'required|string|unique:users,email,' . $user->id,
+            'profile_image' => 'mimes:jpg,jpeg',
+        ]);
+
         $user->name = $request->name;
-        $user->email = $request->email;
+        $user->subscription_start = $request->subscription_start;
+        $user->subscription_end = $request->subscription_end;
         if ($request->hasFile('profile_image')) {
             $image = $request->file('profile_image');
             $name = time() . \Str::random(30) . '.' . $image->getClientOriginalExtension();
             $destinationPath = public_path('/imgs');
             $image->move($destinationPath, $name);
             $imageName = 'imgs/' . $name;
-            if ($user->profile_image)
+            if (isset($user->profile_image))
+                File::delete(public_path('imgs/' . $user->profile_image));
+            $user->profile_image = $imageName;
+        }
+        $user->save();
+        return redirect()->route('allUsers.list');
+    }
+ /*
+    public function update(StoreRequest $request,$user_id)
+    {
+        $user = User::find($user_id);
+        $validated = $request->validate([
+            'name' => 'required|max:50',
+            'email' => 'required|string|unique:users,email,' . $user->id,
+            'profile_image' => 'mimes:jpg,jpeg',
+        ]);
+
+        $user->name = $request->name;
+        $user->email = $request->email;
+
+        if ($request->hasFile('profile_image')) {
+            $image = $request->file('profile_image');
+            $name = time() . \Str::random(30) . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('/imgs');
+            $image->move($destinationPath, $name);
+            $imageName = 'imgs/' . $name;
+            if (isset($user->profile_image))
                 File::delete(public_path('imgs/' . $user->profile_image));
             $user->profile_image = $imageName;
         }
         $user->save();
         return redirect()->route('user.admin_profile', auth()->user()->id)->with('success', 'Your data successfully updated');
     }
-
+*/
     public function update_my_profile(StoreRequest $request)
     {
       $user = User::find(Auth::user()->id);

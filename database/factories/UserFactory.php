@@ -31,8 +31,8 @@ class UserFactory extends Factory
             'profile_image' => $this->faker->imageUrl($width = 200, $height = 200),
             'birth_date' => $this->faker->dateTimeBetween('1990-01-01', '2003-12-31')->format('Y/m/d'), // outputs something like 17/09/2001
             'last_login_at' => $this->faker->dateTimeBetween('-1 month', '+1 month'),
-            'total_sessions' => rand(80, 120),
-            'remain_session' => rand(10, 80),
+            'subscription_start' => $this->faker->dateTimeBetween('2023-04-15', '2023-05-01')->format('Y/m/d'),
+            'subscription_end' => $this->faker->dateTimeBetween('2023-05-02', '2023-06-30')->format('Y/m/d'),
 
         ];
     }

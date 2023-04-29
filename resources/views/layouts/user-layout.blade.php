@@ -69,12 +69,12 @@ body {
     <nav class="main-header navbar navbar-expand navbar-white navbar-light" style="font-size: 14px;">
         <!-- Left navbar links -->
         <ul class="navbar-nav">
-            @role('admin')
+
             <li class="nav-item">
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button" id="asideIcon"><i
                         class="fas fa-bars"></i></a>
             </li>
-            @endrole
+      
             <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Home</a>
             </li>
@@ -127,7 +127,7 @@ body {
     </nav>
     <!-- /.navbar -->
     <!-- Main Sidebar Container -->
-    @role('admin')
+  
 
         <aside class="main-sidebar sidebar-dark-primary elevation-4" style="font-size: 14px;width: 200px;">
             <!-- Brand Logo -->
@@ -162,7 +162,7 @@ body {
                             <p>Revenue</p>
                         </a>
                     </li>
-                    @endrole
+      
                  
                     {{-- # ======================================= # Coaches # ======================================= # --}}
                     <li class="nav-item">
@@ -204,41 +204,8 @@ body {
                             </li>
                         </ul>
                     </li>
-                    {{-- # ======================================= # Training Packages # ======================================= # --}}
-                    <li class="nav-item">
-                        <a href="/" class="nav-link">
-                            <i class="nav-icon fas fa-cubes"></i>
-                            <p> Training Packages
-                                <i class="fas fa-angle-left right"></i>
-                            </p>
-                        </a>
-                        <ul class="nav nav-treeview">
-                            <li class="nav-item">
-                                <a href="{{ route('trainingPackeges.listPackeges') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p> List Packages </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('trainingPackeges.creatPackege') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p> Add New </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('PaymentPackage.stripe') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p> Buy Package </p>
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{ route('PaymentPackage.purchase_history') }}" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p> Purchases </p>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
+            
+                    @endrole
                     {{-- # ======================================= # Training Session # ======================================= # --}}
                     <li class="nav-item">
                         <a href="pages/kanban.html" class="nav-link">
@@ -254,15 +221,20 @@ body {
                                     <p> All Sessions </p>
                                 </a>
                             </li>
+                            @role('admin|coach')
                             <li class="nav-item">
                                 <a href="{{ route('TrainingSessions.training_session') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
                                     <p> Add New </p>
                                 </a>
                             </li>
+                            @endrole
                         </ul>
                     </li>
+                 
+                    @role('admin')
                     {{-- # ======================================= # Attendance # ======================================= # --}}
+              
                     <li class="nav-item">
                         <a href="/listHistory" class="nav-link">
                             <i class="nav-icon fas fa-book"></i>
@@ -278,13 +250,17 @@ body {
                             <p> Banned Users </p>
                         </a>
                     </li>
+
+                    @endrole
+
+
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->
         </div>
         <!-- /.sidebar -->
     </aside>
-    @endrole
+    
 
 
 

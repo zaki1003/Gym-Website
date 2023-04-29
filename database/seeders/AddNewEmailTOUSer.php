@@ -28,8 +28,7 @@ class AddNewEmailTOUSer extends Seeder
             'profile_image' => 'https://via.placeholder.com/200x200.png/004488?text=molestias',
             'birth_date' => '1997-10-31',
             'last_login_at' => '2022-01-12 12:39:56',
-            'total_sessions' => '91',
-            'remain_session' => '33',
+
             'created_at' => '2022-03-12 13:11:56',
             'updated_at' => '2022-03-12 13:11:56',
             
@@ -46,8 +45,7 @@ class AddNewEmailTOUSer extends Seeder
             'profile_image' => 'https://via.placeholder.com/200x200.png/004488?text=molestias',
             'birth_date' => '1997-10-31',
             'last_login_at' => '2022-01-12 12:39:56',
-            'total_sessions' => '91',
-            'remain_session' => '33',
+
             'created_at' => '2022-03-12 13:11:56',
             'updated_at' => '2022-03-12 13:11:56',
  

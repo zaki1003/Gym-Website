@@ -31,8 +31,8 @@ return new class extends Migration
             $table->string('profile_image')->nullable();
             $table->date('birth_date')->nullable();
 
-            $table->string('total_sessions')->nullable();
-            $table->string('remain_session')->nullable();
+            $table->date('subscription_start')->nullable();
+            $table->date('subscription_end')->nullable();
 
             $table->timestamp('last_login_at')->useCurrent();
 

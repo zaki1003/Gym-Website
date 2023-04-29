@@ -23,7 +23,7 @@
                 <thead>
                         <tr>
                             <th>ID</th>
-                            <th> Gym Manager Name</th>
+                            <th> Name</th>
                             <th>Email</th>
                             <th>Profile Picture</th>
                         </tr>

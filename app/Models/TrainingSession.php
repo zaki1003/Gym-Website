@@ -21,10 +21,7 @@ class TrainingSession extends Model
         'training_package_id',
     ];
 
-    public function trainingPackage()
-    {
-        return $this->belongsTo(TrainingPackage::class);
-    }
+
 
     public function users()
     {

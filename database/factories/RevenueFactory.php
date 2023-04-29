@@ -27,7 +27,7 @@ class RevenueFactory extends Factory
                 'Bank transfers', 'Prepaid cards', 'Digital currencies', 'bank'
             ]),
             'user_id' => rand(30, 40),
-            'training_package_id' => rand(1, 10),
+    
         ];
     }
 }

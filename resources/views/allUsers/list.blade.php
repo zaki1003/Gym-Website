@@ -24,7 +24,7 @@
         <!-- Default box -->
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Projects</h3>
+                <h3 class="card-title">Users</h3>
                 <div class="card-tools">
                     <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
@@ -42,6 +42,8 @@
                             <th class="project-state"> User Name</th>
                             <th class="project-state">Email</th>
                             <th class="project-state">Profile Picture</th>
+                            <th class="project-state">Subscription Start</th>
+                            <th class="project-state">Subscription End</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -53,10 +55,19 @@
                             <td class="project-state">{{ $user->email }} </td>
                             <td class="project-state"><img alt="Avatar" class="table-avatar"
                                     src="{{ asset($user->profile_image) }}"></td>
+                                    <td class="project-state">{{ $user->subscription_start }} </td>
+                                    <td class="project-state">{{ $user->subscription_end }} </td>
                             <td class="project-actions text-right">
                                 <a class="btn btn-info btn-sm" href="{{ route('allUsers.show', $user['id']) }}">
                                     <i class="fa fa-eye"></i>
                                
+
+                                    <a class="btn btn-warning btn-sm text-white"
+                                    href="{{ route('user.edit_user', $user->id) }}">
+                                    <i class="fas fa-pencil-alt"></i></a>
+
+
+
                                 <a href="javascript:void(0)" onclick="deleteUser({{ $user->id }})"
                                     class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
 

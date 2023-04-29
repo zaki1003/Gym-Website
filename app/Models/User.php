@@ -38,13 +38,15 @@ class User extends Authenticatable implements BannableContract
         'gender',
         'profile_image',
         'birth_date',
-        'total_sessions',
-        'remain_session',
+        'subscription_start',
+        'subscription_end',
         'last_login_at',
         'updated_at',
     ];
 
- 
+
+   
+
     public function TrainingSessions()
     {
         return $this->belongsToMany(TrainingSession::class);

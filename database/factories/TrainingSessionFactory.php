@@ -23,7 +23,7 @@ class TrainingSessionFactory extends Factory
             // 'finishes_at' => $this->faker->time('H_i_s'),
             'starts_at' => '09:30:00',
             'finishes_at' => '12:30:00',
-            'training_package_id' => rand(1, 10),
+    
         ];
     }
 }
