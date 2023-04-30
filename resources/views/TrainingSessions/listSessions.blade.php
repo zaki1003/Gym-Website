@@ -62,12 +62,24 @@
 
                                             <i class="fa fa-eye"></i>
                                         </a>
+                            
+                                        @role('user')
+                               
+                                            <a class="btn btn-warning btn-sm text-white"
+                                                href="{{ route('PaymentPackage.stripe', $trainingSession->id ) }}">
+    
+                                                <i class="fas fa-address-book"></i>
+                                            </a>
+                                        @endrole
+
+                            @role('admin|coach')
                                         <a class="btn btn-warning btn-sm text-white"
                                             href="{{ route('TrainingSessions.edit_training_session',$trainingSession->id ) }}">
                                             <i class="fas fa-pencil-alt"></i></a>
 
                                         <a href="javascript:void(0)" onclick="deleteSession({{ $trainingSession->id }})"
                                             class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></a>
+@endrole
 
 
                                     </td>

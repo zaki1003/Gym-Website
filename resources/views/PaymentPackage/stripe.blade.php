@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Buy a Package</title>
+	<title>Reserve</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <style type="text/css">
@@ -33,11 +33,19 @@
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="row text-center">
-                        <h3 class="panel-heading">Payment Details</h3>
+                        <h3 class="panel-heading">Reservation Details</h3>
                     </div>                    
                 </div>
                 <div class="panel-body">
-  
+                    @if ($errors->any())
+                    <div class="alert bg-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                     @if (Session::has('success'))
                         <div class="alert alert-success text-center">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
@@ -45,61 +53,47 @@
                         </div>
                     @endif
   
-                    <form role="form" action="{{ route('stripe.post') }}" method="post" class="validation"
-                                                     data-cc-on-file="false"
-                                                    data-stripe-publishable-key="{{ env('STRIPE_KEY') }}"
-                                                    id="payment-form">
+                    <form role="form" action="{{ route('stripe.post') }}" method="POST" >
                         @csrf
   
   
                         <div class='form-row row'>
                             <div class='col-xs-12 form-group card required'>
-                                <label class='control-label'>Card Number</label> <input
-                                    autocomplete='off' class='form-control card-num' size='20'
-                                    type='text'>
+                                <label class='control-label'>Your Subscription Ending Date</label>
+                                
+                                <input type="date" id="dayEnd" class="form-control" value="{{  auth()->user()->subscription_start}}" name="subscription_end" readonly>
+                        
                             </div>
-                        </div>
+                          </div>
+                  
                         <div class="form-group">
                             <label for="name">User</label>
                             <select id="user_id" class="form-control custom-select" name="user_id">
-                                @foreach(App\Models\User::role('user')->get() as $user)
-                                <option value="{{ $user->id }}">{{ $user->name }}</option>
-                                @endforeach
+               
+                                <option value="{{ auth()->user()->id }}"> {{  auth()->user()->name  }}</option>
+                                  
+                    
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="package_id">Package</label>
-                            <select id="package_id" class="form-control custom-select" name="package_id">
-                                @foreach(App\Models\TrainingPackage::get() as $package)
-                                <option value="{{ $package->id  }} | {{  $package->price }}">{{ $package->name }} -
-                                    {{ $package->price / 100 }}$
+                            <label for="session_id">Session</label>
 
-                            </option>
+                  <select id="session_id" class="form-control custom-select" name="session_id">
+               
+                                <option value="{{ $trainingSession->id }}"> {{  $trainingSession->name  }}</option>
+                                  
+                    
+                            </select>
+                         
+               
 
 
-                                @endforeach
 
                             </select>
                         </div>
             
   
-                        <div class='form-row row'>
-                            <div class='col-xs-12 col-md-4 form-group cvc required'>
-                                <label class='control-label'>CVC</label> 
-                                <input autocomplete='off' class='form-control card-cvc' placeholder='e.g 415' size='4'
-                                    type='text'>
-                            </div>
-                            <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                <label class='control-label'>Expiration Month</label> <input
-                                    class='form-control card-expiry-month' placeholder='MM' size='2'
-                                    type='text'>
-                            </div>
-                            <div class='col-xs-12 col-md-4 form-group expiration required'>
-                                <label class='control-label'>Expiration Year</label> <input
-                                    class='form-control card-expiry-year' placeholder='YYYY' size='4'
-                                    type='text'>
-                            </div>
-                        </div>
+                      
   
                         <div class='form-row row'>
                             <div class='col-md-12 hide error form-group'>
@@ -109,7 +103,7 @@
   
                         <div class="row">
                             <div class="col-xs-12">
-                                <button class="btn btn-danger btn-lg btn-block" type="submit">Pay Now (₹100)</button>
+                                <button class="btn btn-danger btn-lg btn-block" type="submit">Reserve</button>
                             </div>
                         </div>
                           

@@ -57,7 +57,7 @@
                                 <div class="form-group">
                                     <label for="email">Email</label>
                                     <input type="email" id="email" class="form-control"
-                                        value="{{ auth()->user()->email }}" name="email">
+                                        value="{{ auth()->user()->email }}" name="email" readonly>
                                 </div>
                                 <div class="form-group">
                                     <label class="form-label" for="image">Upload Image</label>

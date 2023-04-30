@@ -79,7 +79,7 @@ class TrainingController extends Controller
     #=======================================================================================#
     #			                             store                                         	#
     #=======================================================================================#
-    public function store(Request $request)
+    public function storeAdmin(Request $request)
     {
 
         $request->validate([
@@ -112,7 +112,42 @@ class TrainingController extends Controller
         $data = array('user_id' => $user_id, "training_session_id" => $id);
         DB::table('training_session_user')->insert($data);
 
-        return redirect()->route('TrainingSessions.listSessions');
+        return redirect()->route('TrainingSessions.listSessionsAdmin');
+    }
+    public function storeCoach(Request $request)
+    {
+
+        $request->validate([
+            'name' => ['required', 'string', 'min:2'],
+            'day' => ['required', 'date', 'after_or_equal:today'],
+            'starts_at' => ['required'],
+            'finishes_at' => ['required'],
+
+        ]);
+
+
+
+        $validate_old_seesions = TrainingSession::where('day', '=', $request->day)->where("starts_at", "!=", null)->where("finishes_at", "!=", null)->where(function ($q) use ($request) {
+            $q->whereRaw("starts_at = '$request->starts_at' and finishes_at ='$request->finishes_at'")
+                ->orwhereRaw("starts_at < '$request->starts_at' and finishes_at > '$request->finishes_at'")
+                ->orwhereRaw("starts_at > '$request->starts_at' and starts_at < '$request->finishes_at'")
+                ->orwhereRaw("finishes_at > '$request->starts_at' and finishes_at < '$request->finishes_at'")
+                ->orwhereRaw("'$request->starts_at' > '$request->finishes_at'")
+                ->orwhereRaw("'starts_at' > 'finishes_at'")
+                ->orwhereRaw("starts_at > '$request->starts_at' and finishes_at < '$request->finishes_at'");
+        })->get()->toArray();
+
+
+        if (count($validate_old_seesions) > 0)
+            return back()->withErrors("please check your time")->withInput();
+        $requestData = request()->all();
+        $session = TrainingSession::create($requestData);
+        $user_id = $request->input('user_id');
+        $id = $session->id;
+        $data = array('user_id' => $user_id, "training_session_id" => $id);
+        DB::table('training_session_user')->insert($data);
+
+        return redirect()->route('TrainingSessions.listSessionsCoach');
     }
     #=======================================================================================#
     #			                             show                                         	#
@@ -121,7 +156,7 @@ class TrainingController extends Controller
     {
         $userId = DB::select("select user_id from training_session_user where training_session_id = $id");
 
-        $user = User::find($userId);
+    //    $user = User::find($userId);
 
         $trainingSession = TrainingSession::findorfail($id);
         return view('TrainingSessions.show_training_session', ['trainingSession' => $trainingSession]);
@@ -202,3 +237,4 @@ class TrainingController extends Controller
         }
     }
 }
+

@@ -7,13 +7,14 @@ use Carbon\Carbon;
 
 use App\Models\TrainingSession;
 use App\Models\User;
+use App\Models\Reservation;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class WelcomeController extends Controller
 {
     private $userID, $userRole,
-        $coaches = 0, $users = 0, $trainingSessions = 0;
+        $coaches = 0, $users = 0, $trainingSessionsCount = 0, $ReservationsCount = 0;
     #=======================================================================================#
     #			                               index                                       	#
     #=======================================================================================#
@@ -33,11 +34,18 @@ class WelcomeController extends Controller
 
                 $this->coaches = count(User::role('coach')->get());
                 $this->users = count(User::role('user')->get());
-                $this->trainingSessions =  count(TrainingSession::where('day', '=', $todayDay->toDateString())->get());
+                $this->trainingSessionsCount =  count(TrainingSession::where('day', '=', $todayDay->toDateString())->get());
 
 
                 break;
      
+
+                case 'user':
+          
+                    $this->ReservationsCount =  count(Reservation::where('user_id', '=',  Auth::user()->id)->get());
+    
+    
+                    break;
             case 'coach':
                 $userOfGym = User::with(['trainingSessions'])->where('id', $this->userID)->first();
                 if (count($userOfGym->trainingSessions) <= 0) { //for empty statement
@@ -53,7 +61,8 @@ class WelcomeController extends Controller
       
             'coaches' => $this->coaches,
             'users' => $this->users,
-            'trainingSessions' => $this->trainingSessions,
+            'trainingSessionsCount' => $this->trainingSessionsCount,
+            'reservationsCount' => $this->ReservationsCount,
         ]);
     }
 }

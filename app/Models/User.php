@@ -40,7 +40,7 @@ class User extends Authenticatable implements BannableContract
         'birth_date',
         'subscription_start',
         'subscription_end',
-        'last_login_at',
+
         'updated_at',
     ];
 

@@ -206,7 +206,7 @@ body {
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
-                            @role('admin')
+                            @role('admin|user')
                             <li class="nav-item">
                                 <a href="{{ route('TrainingSessions.listSessionsAdmin') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
@@ -218,7 +218,7 @@ body {
                             <li class="nav-item">
                                 <a href="{{ route('TrainingSessions.listSessionsCoach') }}" class="nav-link">
                                     <i class="far fa-circle nav-icon"></i>
-                                    <p> All Sessions </p>
+                                    <p> My Sessions </p>
                                 </a>
                             </li>
                             @endrole
@@ -233,9 +233,10 @@ body {
                         </ul>
                     </li>
                  
-                    @role('admin')
+                  
                     {{-- # ======================================= # Reservations # ======================================= # --}}
               
+                    @role('admin')
                     <li class="nav-item">
                         <a href="/listReservationsAdmin" class="nav-link">
                             <i class="nav-icon fas fa-book"></i>
@@ -244,9 +245,21 @@ body {
                         </a>
                         </a>
                     </li>
-               
-                    {{-- # ======================================= # Banned Users # ======================================= # --}}
+               @endrole
+                    @role('user')
                     <li class="nav-item">
+                        <a href="/listReservationsUser" class="nav-link">
+                            <i class="nav-icon fas fa-book"></i>
+                            <p> My Reservations </p>
+                            </p>
+                        </a>
+                        </a>
+                    </li>
+               @endrole
+                
+               {{-- # ======================================= # Banned Users # ======================================= # --}}
+               @role('admin')
+               <li class="nav-item">
                         <a href="{{ route('user.listBanned') }}" class="nav-link">
                             <i class="nav-icon fa fa-user-lock"></i>
                             <p> Banned Users </p>

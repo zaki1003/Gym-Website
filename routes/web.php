@@ -25,9 +25,9 @@ use App\Http\Controllers\ReservationController;
 #=======================================================================================#
 #			                           Home Route                               	    #
 #=======================================================================================#
-Route::get('/PaymentPackage/stripe', [StripeController::class, 'stripe'])->name('PaymentPackage.stripe')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
-Route::post('/PaymentPackage/stripe', [StripeController::class, 'stripePost'])->name('stripe.post')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
-Route::get('/PaymentPackage/purchase_history', [StripeController::class, 'index'])->name('PaymentPackage.purchase_history')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
+Route::get('/PaymentPackage/stripe/{session}', [StripeController::class, 'stripe'])->name('PaymentPackage.stripe')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:user');
+Route::post('/PaymentPackage/stripe', [StripeController::class, 'stripePost'])->name('stripe.post')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:user');
+Route::get('/PaymentPackage/purchase_history', [StripeController::class, 'index'])->name('PaymentPackage.purchase_history')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:user');
 Route::get('/', [WelcomeController::class, 'index'])->name('welcome')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach|user');
 #=======================================================================================#
 #			                        Gym Controller Routes                              	#
@@ -65,11 +65,13 @@ Route::group(['middleware' => ['auth', 'logs-out-banned-user']], function () {
 #=======================================================================================#
 #			                         Training Routes                                  	#
 #=======================================================================================#
-Route::get('/TrainingSessions/indexAdmin', [TrainingController::class, 'indexAdmin'])->name('TrainingSessions.listSessionsAdmin')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
+Route::get('/TrainingSessions/indexAdmin', [TrainingController::class, 'indexAdmin'])->name('TrainingSessions.listSessionsAdmin')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|user');
 Route::get('/TrainingSessions/indexCoach', [TrainingController::class, 'indexCoach'])->name('TrainingSessions.listSessionsCoach')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:coach');
 Route::get('/TrainingSessions/create_session', [TrainingController::class, 'create'])->name('TrainingSessions.training_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
-Route::post('/TrainingSessions/sessions', [TrainingController::class, 'store'])->name('TrainingSessions.store')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
-Route::get('/TrainingSessions/sessions/{session}', [TrainingController::class, 'show'])->name('TrainingSessions.show_training_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
+Route::post('/TrainingSessions/sessionsAdmin', [TrainingController::class, 'storeAdmin'])->name('TrainingSessions.storeAdmin')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
+Route::post('/TrainingSessions/sessionsCoach', [TrainingController::class, 'storeCoach'])->name('TrainingSessions.storeCoach')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
+
+Route::get('/TrainingSessions/sessions/{session}', [TrainingController::class, 'show'])->name('TrainingSessions.show_training_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach|user');
 Route::get('/TrainingSessions/{session}/edit', [TrainingController::class, 'edit'])->name('TrainingSessions.edit_training_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
 Route::delete('/TrainingSessions/{session}  ', [TrainingController::class, 'deleteSession'])->name('TrainingSessions.delete_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
 Route::put('/TrainingSessions/{session}', [TrainingController::class, 'update'])->name('TrainingSessions.update_session')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
@@ -116,6 +118,7 @@ Route::controller(AllUsersController::class)->group(function () {
 #=======================================================================================#
 Route::get('/listReservationsAdmin', [ReservationController::class, 'listReservationsAdmin'])->name('reservation')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin');
 Route::get('/listReservationsCoach', [ReservationController::class, 'listReservationsCoach'])->name('reservation')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:coach');
+Route::get('/listReservationsUser', [ReservationController::class, 'listReservationsUser'])->name('reservation')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:user');
 
 #=======================================================================================#
 #			                            empty statement                                 #
@@ -125,3 +128,4 @@ Route::get('/empty', [EmptyController::class, 'empty'])->name('empty.statement')
 #			                           not Found route                                  #
 #=======================================================================================#
 Route::get('/unAuth', [EmptyController::class, 'unAuth'])->name('500')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach');
+

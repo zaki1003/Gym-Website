@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 use App\Models\User;
@@ -52,7 +52,7 @@ class CoachController extends Controller
             'email' => ['required'],
             'profile_image' => ['nullable', 'mimes:jpg,jpeg'],
         ]);
-
+        $todayDay = Carbon::now();
         if ($request->hasFile('profile_image') == null) {
             $imageName = 'imgs/defaultImg.jpg';
         } else {
@@ -65,6 +65,8 @@ class CoachController extends Controller
 
         $user = new User();
         $user->name = $request->name;
+    
+
         $user->email = $request->email;
         $user->password = bcrypt($request->password);
         $user->profile_image = $imageName;
@@ -98,6 +100,8 @@ class CoachController extends Controller
 
         $user->name = $request->name;
         $user->email = $request->email;
+ 
+
 
         if ($request->hasFile('profile_image')) {
             $image = $request->file('profile_image');

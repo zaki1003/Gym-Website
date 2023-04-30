@@ -55,7 +55,15 @@
                         <li class="list-group-item">
                             <b>Email</b> <a class="float-right">{{ auth()->user()->email }}</a>
                         </li>
+@role('user')
+                        <li class="list-group-item">
+                            <b>Subscription Starting Date</b> <a class="float-right">{{ auth()->user()->subscription_start }}</a>
+                        </li>
 
+                        <li class="list-group-item">
+                            <b>Subscription Ending Date</b> <a class="float-right">{{ auth()->user()->subscription_end }}</a>
+                        </li>
+@endrole
                     </ul>
 
                                    <a href="{{ route('user.edit_my_profile') }}"

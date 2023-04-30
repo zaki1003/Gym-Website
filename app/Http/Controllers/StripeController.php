@@ -2,61 +2,68 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Revenue;
-use App\Models\TrainingPackage;
+use App\Models\Reservation;
+use App\Models\TrainingSession;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Session;
 use Stripe;
 
 class StripeController extends Controller
 {
 
- 
-    public function stripe()
+/*
+    public function stripe($id)
     {
+        $userId = DB::select("select user_id from training_session_user where training_session_id = $id");
 
-        return view('PaymentPackage.stripe');
+    //    $user = User::find($userId);
+
+        $trainingSession = TrainingSession::findorfail($id);
+        return view('PaymentPackage.stripe', ['trainingSession' => $trainingSession]);
+    }
+ */
+ 
+    public function stripe($id)
+    {
+        $trainingSession = TrainingSession::find($id);
+        return view('PaymentPackage.stripe', ['trainingSession' => $trainingSession]);
     }
 
    
     public function stripePost(Request $request)
     {
+
+       
         $packageInfo = explode('|', $request->package_id);
-        $price = $packageInfo[1];
-        $training_package_id = $packageInfo[0];
 
+        $training_session_id = $packageInfo[0];
 
-     
-        $user = User::find($request->user_id);
-        $package = TrainingPackage::find($training_package_id);
-        $user->total_sessions += $package->sessions_number;
-        $user_id = $request->user_id;
-        $userEmail = $user->email;
-        $userName = $user->name;
-        $packageName = $package->name;
-        Stripe\Stripe::setApiKey(env('STRIPE_SECRET'));
-        Stripe\Charge::create([
-            "amount" => $price[1] * 100,
-            "currency" => "usd",
-            "source" => $request->stripeToken,
-            "description" => "Successfully Bought",
-        ]);
+        $todayDay = Carbon::now();
+   
+ 
+
+    $dateTimestamp1 = strtotime($todayDay->toDateString());
+    $dateTimestamp2 = strtotime($request->subscription_end);
+
+  
+    if ( $dateTimestamp1 > $dateTimestamp2)
+    
+   return back()->withErrors("please renew your subscription");
+   
+  Reservation::create([
+            'reservation_at' => Carbon::now(),
+            'user_id' => Auth::user()->id,
+            'training_session_id' =>    $request->session_id,
+
+  ]);
+
 
         Session::flash('success', 'Payment successful!');
-        Revenue::create([
-            'price' => $price,
-            'payment_id' => $training_package_id + $user_id,
-            'visa_number' => '4242 4242 4242 4242',
-            'payment_method' => 'stripe',
-            'user_id' => $user_id,
-            'training_package_id' => $training_package_id,
 
-        ]);
-
-        $user->update(['total_sessions' => $user->total_sessions]);
-
-        return redirect()->route('PaymentPackage.purchase_history');
+    return redirect()->route('reservation');
     }
 
     public function index()

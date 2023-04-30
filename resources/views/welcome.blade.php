@@ -3,12 +3,12 @@
     <div class="content-wrapper pb-4">
         <div class="container-fluid pt-5">
             <div class="row">
-                {{-- # ======================================= # Total Revenue # ======================================= # --}}
+                {{-- # ======================================= # Today Training Sessions # ======================================= # --}}
                 @role('admin')
                     <div class="col-lg-3 col-6">
                         <div class="small-box bg-info">
                             <div class="inner">
-                                <h3>{{ $trainingSessions }}</h3>
+                                <h3>{{ $trainingSessionsCount }}</h3>
                                 <p>Today Training Sessions</p>
                             </div>
                             <div class="icon">
@@ -17,6 +17,24 @@
                         </div>
                     </div>
                 @endrole
+
+
+                   {{-- # ======================================= # My Reservations # ======================================= # --}}
+                   @role('user')
+                   <div class="col-lg-3 col-6">
+                    <a href="{{ route('reservation') }}">  
+                    <div class="small-box bg-info">
+                           <div class="inner">
+                               <h3>{{ $reservationsCount }}</h3>
+                               <p>My Reservations</p>
+                           </div>
+                           <div class="icon">
+                               <i class="fas fa-basketball-ball text-white" style="font-size: 50px !important"></i>
+                           </div>
+                       </div>
+                    </a>
+                   </div>
+               @endrole
                 {{-- # ======================================= # Coaches # ======================================= # --}}
                 @role('admin')
                     <div class="col-lg-3 col-6">

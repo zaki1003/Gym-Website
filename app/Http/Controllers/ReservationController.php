@@ -39,4 +39,17 @@ class ReservationController extends Controller
         ]);
     }
 
+    public function listReservationsUser()
+    {
+        $history_reservations=Reservation::select(DB::raw('training_sessions.name as training_session_name,training_sessions.day as training_session_date,Date(reservations.reservation_at
+        ) as reservation_date,Time(reservations.reservation_at) as reservation_time , users.name as name , users.email as email'))
+        ->join('users', 'users.id', '=', 'reservations.user_id')->join('training_sessions', 'training_sessions.id', '=', 'reservations.training_session_id')
+ 
+        ->where('reservations.user_id',Auth::user()->id)
+
+        ->get();
+        return view('reservation', [
+            'reservations' =>$history_reservations,
+        ]);
+    }
 }

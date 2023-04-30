@@ -64,13 +64,25 @@
                     </div>
                 </div>
             </div>
+       @role('admin')
             <div class="row">
                 <div class="col-12">
-                    <a href="{{ route('TrainingSessions.listSessions')}}" class="btn btn-secondary">Cancel</a>
+                    <a href="{{ route('TrainingSessions.listSessionsAdmin')}}" class="btn btn-secondary">Cancel</a>
                     <input type="submit" value="Update" class="btn btn-success float-right">
                 </div>
             </div>
+@endrole
+@role('coach')    
+<div class="row">
+                <div class="col-12">
+                    <a href="{{ route('TrainingSessions.listSessionsCoach')}}" class="btn btn-secondary">Cancel</a>
+                    <input type="submit" value="Update" class="btn btn-success float-right">
+                </div>
+            </div>
+    
+    @endrole
         </form>
     </section>
 </div>
 @endsection
+
