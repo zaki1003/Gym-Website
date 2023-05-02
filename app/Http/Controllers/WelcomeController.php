@@ -20,6 +20,42 @@ class WelcomeController extends Controller
     #=======================================================================================#
     public function index()
     {
+    
+        return view("home" );
+    }
+    public function aboutUs()
+    {
+    
+        return view("aboutUs" );
+    } 
+    
+
+    public function createAccount()
+    {
+    
+        return view("createAccount" );
+    }
+    public function services()
+    {
+    
+        return view("services" );
+    }
+
+
+    public function signin()
+    {
+    
+        return view("signin" );
+    }
+
+
+    public function contact()
+    {
+    
+        return view("contact" );
+    }
+    public function dashboard()
+    {
         $this->userID = Auth::id();
         $this->userData = User::find($this->userID);
         $this->userRole = Auth::user()->getRoleNames();
@@ -29,35 +65,28 @@ class WelcomeController extends Controller
 
         switch ($this->userRole['0']) {
             case 'admin':
-
-
-
                 $this->coaches = count(User::role('coach')->get());
                 $this->users = count(User::role('user')->get());
                 $this->trainingSessionsCount =  count(TrainingSession::where('day', '=', $todayDay->toDateString())->get());
-
-
                 break;
-     
 
                 case 'user':
-          
                     $this->ReservationsCount =  count(Reservation::where('user_id', '=',  Auth::user()->id)->get());
-    
-    
                     break;
-            case 'coach':
+       
+
+                case 'coach':
                 $userOfGym = User::with(['trainingSessions'])->where('id', $this->userID)->first();
                 if (count($userOfGym->trainingSessions) <= 0) { //for empty statement
                     return view('empty');
                 }
-                return view("welcome", [
+                return view("dashboard", [
                     'trainingSessions' => $userOfGym->trainingSessions,
                 ]);
                 break;
         }
 
-        return view("welcome", [
+        return view("dashboard", [
       
             'coaches' => $this->coaches,
             'users' => $this->users,

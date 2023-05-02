@@ -32,7 +32,7 @@ class User extends Authenticatable implements BannableContract
     protected $fillable = [
         'name',
         'email',
-        'is_verifications',
+     //   'is_verifications',
         'national_id',
         'password',
         'gender',

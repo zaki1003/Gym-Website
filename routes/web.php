@@ -28,7 +28,18 @@ use App\Http\Controllers\ReservationController;
 Route::get('/PaymentPackage/stripe/{session}', [StripeController::class, 'stripe'])->name('PaymentPackage.stripe')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:user');
 Route::post('/PaymentPackage/stripe', [StripeController::class, 'stripePost'])->name('stripe.post')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:user');
 Route::get('/PaymentPackage/purchase_history', [StripeController::class, 'index'])->name('PaymentPackage.purchase_history')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:user');
-Route::get('/', [WelcomeController::class, 'index'])->name('welcome')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach|user');
+
+
+Route::get('/', [WelcomeController::class, 'index'])->name('welcome'); 
+Route::get('/about-us', [WelcomeController::class, 'aboutUs'])->name('aboutUs'); 
+Route::get('/contact', [WelcomeController::class, 'contact'])->name('contact'); 
+Route::get('/services', [WelcomeController::class, 'services'])->name('services'); 
+Route::get('/create-account', [WelcomeController::class, 'createAccount'])->name('createAccount'); 
+
+Route::get('/dashboard', [WelcomeController::class, 'dashboard'])->name('dashboard')->middleware('auth')->middleware('logs-out-banned-user')->middleware('role:admin|coach|user');
+Route::get('/signin', [WelcomeController::class, 'signin'])->name('signin');
+
+//Route::get('/login', [WelcomeController::class, 'login'])->name('login');
 #=======================================================================================#
 #			                        Gym Controller Routes                              	#
 #=======================================================================================#

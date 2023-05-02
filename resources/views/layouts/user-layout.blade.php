@@ -74,10 +74,10 @@ body {
                 <a class="nav-link" data-widget="pushmenu" href="#" role="button" id="asideIcon"><i
                         class="fas fa-bars"></i></a>
             </li>
-      
             <li class="nav-item d-none d-sm-inline-block">
-                <a href="#" class="nav-link">Home</a>
+                <a href="#" class="nav-link">Accueil</a>
             </li>
+           
             <!--  <li class="nav-item d-none d-sm-inline-block">
                 <a href="#" class="nav-link">Contact</a>
             </li> -->
@@ -110,7 +110,7 @@ body {
                         </div>
                         <div class="pull-right">
                             <a href="{{ route('logout') }}" class="btn btn-default btn-flat" onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">Sign out</a>
+                                    document.getElementById('logout-form').submit();">Déconnecter</a>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                 @csrf
                             </form>
@@ -293,8 +293,7 @@ body {
     <div id="sidebar-overlay"></div>
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <footer class="main-footer d-flex justify-content-center" style="font-size:13px;">
-        <span>Copyright &copy; 2022-2023 <span class="bg-primary px-2 py-1">Gym Ststem.</span></span> All rights
-        reserved.
+        <span>Copyright &copy; 2023 <span class="bg-primary px-2 py-1"> GYM UP </span></span>  Tous droits réservés.
     </footer>
     <!-- jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
