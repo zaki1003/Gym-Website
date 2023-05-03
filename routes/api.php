@@ -38,7 +38,8 @@ Route::controller(AuthController::class)->group(function () {
 });
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('update_profile', [AuthController::class, 'updateProfile']);
-    Route::get('get_sessions', [SessionsController::class, 'getSessionsForUser']);
+    Route::get('get_sessions', [SessionsController::class, 'index']);
+    Route::get('get_reservations', [SessionsController::class, 'getReservationsForUser']);
 });
 Auth::routes(['verify'=>true]);
 Route::post('email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('auth:sanctum');
@@ -46,8 +47,8 @@ Route::get('email/verify/{id}', [EmailVerificationController::class, 'verify'])-
 //Traning Sessions Routes
 Route::get('sessions',[SessionsController::class,'index'])->middleware('auth:sanctum');
 Route::get('sessions/{session}',[SessionsController::class,'showSession'])->middleware('auth:sanctum');
-Route::get('subscription_sates',[SessionsController::class,'get_subscription_dates'])->middleware('auth:sanctum');
-Route::post('attendSession/{session}',[SessionsController::class,'attend_training_session'])->middleware('auth:sanctum');
+Route::get('subscription_dates',[SessionsController::class,'get_subscription_dates'])->middleware('auth:sanctum');
+Route::post('reserveSession/{session}',[SessionsController::class,'reserve_training_session'])->middleware('auth:sanctum');
 
 
 

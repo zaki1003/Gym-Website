@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
+
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\TrainingSession;
-use App\Models\Attendance;
+use App\Models\Reservation;
 use App\Models\User;
 use Carbon\Carbon;
 
@@ -36,45 +38,67 @@ class SessionsController extends Controller
         ];
     }
 
-    public function attend_training_session($sessionId, Request $request)
+    public function reserve_training_session($sessionId, Request $request)
     {
         $user_id = Auth()->user()->id;
         $session = TrainingSession::find($sessionId);
         $user = user::find($user_id);
-        $remain_session = Auth()->user()->remain_session;
-        $attendTime = Carbon::parse($request->attendance_at)->format('Y-m-d');
+        
+      //  $reserveTime = Carbon::parse($request->reservation_at)->format('Y-m-d');
 
-        if ($attendTime !== $session->day) {
-            $response = ['Sorry, you can attend a session that it’s date not before today or after today'];
+
+        $todayDay = Carbon::now();
+   
+        $reserveTime = Carbon::now();
+
+    $dateTimestamp1 = strtotime($todayDay->toDateString());
+    $dateTimestamp2 = strtotime($request->subscription_end);
+
+
+        if ($reserveTime >= $session->day) {
+            $response = ['Sorry, you can reserve a session that it’s date is before today'];
             return response($response, 200);
         }
 
-        if ($remain_session >= 1) {
-            $request->validate([
-                'attendance_at' => 'required',
-            ]);
+      //  if ($dateTimestamp1 <= $dateTimestamp2) {
+      
 
-            $attend = new Attendance([
-                'attendance_at' => $request->attendance_at,
+            $reserve = new Reservation([
+                'reservation_at' => $reserveTime,
                 'user_id' => $user_id,
                 'training_session_id' => $sessionId
             ]);
-            $attend->save();
-            $remain_session--;
-            $user->update(['remain_session' => $remain_session]);
-
+            $reserve->save();
+    
             $response = [
                 'user' => $user,
                 'session' => $session,
             ];
             return response($response, 200);
-        } else {
-            $response = ['Sorry, you need to buy training sessions in order to attend'];
-            return response($response, 200);
-        }
+     //   } else {
+    //        $response = ['Please renew your subscription'];
+     //       return response($response, 200);
+     //   }
     }
 
-    public function getSessionsForUser(Request $request)
+
+    public function getReservationsForUser()
+    {
+        $history_reservations=Reservation::select(DB::raw('training_sessions.name as training_session_name,training_sessions.day as training_session_date,Date(reservations.reservation_at
+        ) as reservation_date,Time(reservations.reservation_at) as reservation_time , users.name as name , users.email as email'))
+        ->join('users', 'users.id', '=', 'reservations.user_id')->join('training_sessions', 'training_sessions.id', '=', 'reservations.training_session_id')
+ 
+        ->where('reservations.user_id',Auth::user()->id)
+
+        ->get();
+       
+       
+        return response()->json(
+            $history_reservations
+        );
+    
+    }
+   /* public function getSessionsForUser(Request $request)
     {
         $user = Auth()->user();
         $history_attendances = Attendance::select(DB::raw('training_sessions.name as training_session_name,gyms.name as gym_name,Date(attendances.attendance_at
@@ -88,5 +112,5 @@ class SessionsController extends Controller
         return response()->json(
             $history_attendances
         );
-    }
+    }*/
 }

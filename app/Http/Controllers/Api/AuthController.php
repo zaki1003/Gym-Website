@@ -42,7 +42,7 @@ class AuthController extends Controller
         $user->assignRole('user');
         $user->save();
 
-        $user->sendEmailVerificationNotification();
+      //  $user->sendEmailVerificationNotification();
         return response()->json([
             'message' => 'Successfully created user!'
         ], 201);
@@ -66,6 +66,7 @@ class AuthController extends Controller
             $token = $user->createToken($request->device_name)->plainTextToken;
             $response = [
                 'user' => $user,
+                'role' =>  $user->getRoleNames()['0'],
                 'token' => $token,
             ];
             return response($response, 200);
