@@ -121,7 +121,9 @@ class UserController extends Controller
             'comment' => 'banned user',
                         'expired_at' => '+3 month',
         ]);
-        return response()->json(['success' => 'Record deleted successfully!']);
+        return response()->json([
+            'message' => 'success'
+        ]);
     }
 
 

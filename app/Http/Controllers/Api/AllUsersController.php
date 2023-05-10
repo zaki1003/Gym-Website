@@ -33,7 +33,9 @@ class AllUsersController extends Controller
     {
         $singleUser = User::findorfail($id);
         $singleUser->delete();
-        return response()->json(['success' => 'Record deleted successfully!']);
+        return response()->json([
+            'message' => 'success'
+        ]);
     }
 
 

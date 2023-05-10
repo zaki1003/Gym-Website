@@ -41,8 +41,8 @@ Route::controller(AuthController::class)->group(function () {
 });
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::post('update_profile', [AuthController::class, 'updateProfile']);
-    Route::get('TrainingSessions/', [TrainingController::class, 'index']);
-    Route::get('get_reservations', [TrainingController::class, 'getReservationsForUser']);
+    Route::get('TrainingSessions', [TrainingController::class, 'index']);
+    Route::get('get_reservations', [TrainingController::class, 'getReservations']);
 });
 Auth::routes(['verify'=>true]);
 Route::post('email/verification-notification', [EmailVerificationController::class, 'resend'])->middleware('auth:sanctum');
@@ -110,8 +110,8 @@ Route::PATCH('/unBan/{userID}', [UserController::class, 'unBan'])->middleware('a
 #=======================================================================================#
 #			                         Training Routes                                  	#
 #=======================================================================================#
-Route::post('/createSession/sessionsAdmin', [TrainingController::class, 'storeAdmin']) ->middleware('auth:sanctum');
-Route::post('/createSession/sessionsCoach', [TrainingController::class, 'storeCoach'])->middleware('auth:sanctum') ;
+Route::post('/createSession', [TrainingController::class, 'storeCoach']) ->middleware('auth:sanctum');
+
 Route::get('/TrainingSessions/{session}',[TrainingController::class,'showSession'])->middleware('auth:sanctum');
 Route::put('/TrainingSessions/{session}',[TrainingController::class,'update'])->middleware('auth:sanctum');
 Route::delete('/TrainingSessions/{session}',[TrainingController::class,'deleteSession'])->middleware('auth:sanctum');

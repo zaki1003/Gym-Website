@@ -23,14 +23,19 @@ class TrainingController extends Controller
         if ($userRole['0'] == 'coach') {
 
 
-            $trainingSessions = DB::table('training_sessions')
+    
+         $trainingSessions = DB::table('training_sessions')
             ->join('training_session_user', 'training_session_user.training_session_id', '=', 'training_sessions.id')
             ->join('users', 'users.id', '=', 'training_session_user.user_id')
             ->where('users.id',Auth::user()->id)
            ->select('users.name as coach_name', 'training_sessions.*')
             ->get();
     
+            foreach ($trainingSessions as $user) {
 
+                $user->starts_at =            Carbon::parse($user->starts_at)->format('H:i');
+                $user->finishes_at =            Carbon::parse($user->finishes_at)->format('H:i');
+            }
             return $trainingSessions;       
         
         }else{   
@@ -39,15 +44,20 @@ class TrainingController extends Controller
         $trainingSessions = DB::table('training_sessions')
         ->join('training_session_user', 'training_session_user.training_session_id', '=', 'training_sessions.id')
         ->join('users', 'users.id', '=', 'training_session_user.user_id')
-     
-       ->select('users.name as coach_name', 'training_sessions.*')
+        ->join('reservations', 'reservations.training_session_id', '=', 'training_sessions.id')
+        ->where('reservations.user_id','!=' ,Auth::user()->id)
+       ->select('users.name as coach_name', 'training_sessions.*','reservations.user_id' )
         ->get();
             
             
         //    $sessions = TrainingSession::all();
               
               
-              
+        foreach ($trainingSessions as $user) {
+
+            $user->starts_at =            Carbon::parse($user->starts_at)->format('H:i');
+            $user->finishes_at =            Carbon::parse($user->finishes_at)->format('H:i');
+        }
               
                 return $trainingSessions;}
 
@@ -85,6 +95,8 @@ class TrainingController extends Controller
     #=======================================================================================#
     #			                             store                                         	#
     #=======================================================================================#
+
+
     public function storeAdmin(Request $request)
     {
 
@@ -119,21 +131,25 @@ class TrainingController extends Controller
         $id = $session->id;
         $data = array('user_id' => $user_id, "training_session_id" => $id);
         DB::table('training_session_user')->insert($data);
-
-        return response()->json(['success' => 'Record Stored successfully!']);
+        return response()->json([
+            'message' => 'success'
+        ]);
     }
+
 
 
 
     public function storeCoach(Request $request)
     {
 
+
+
         $request->validate([
             'name' => ['required', 'string', 'min:2'],
             'day' => ['required', 'date', 'after_or_equal:today'],
             'starts_at' => ['required'],
             'finishes_at' => ['required'],
-            'user_id'=> ['required'],
+      
 
         ]);
 
@@ -154,12 +170,28 @@ class TrainingController extends Controller
         return response()->json(['message' => 'please check your time']);
         $requestData = request()->all();
         $session = TrainingSession::create($requestData);
-        $user_id = $request->input('user_id');
+        $user_id = Auth::user()->id;
         $id = $session->id;
         $data = array('user_id' => $user_id, "training_session_id" => $id);
         DB::table('training_session_user')->insert($data);
 
-        return response()->json(['success' => 'Record Created successfully!']);
+        return response()->json([
+            'message' => 'success'
+        ]);
+    }
+
+
+
+    public function store(Request $request)
+    {
+
+    $userRole = Auth::user()->getRoleNames();
+      
+    if ($userRole['0'] == 'admin') {
+
+        storeAdmin( $request);
+    }
+else storeCoach($request);
     }
 
 
@@ -177,16 +209,32 @@ class TrainingController extends Controller
         $reserveTime = Carbon::now();
 
     $dateTimestamp1 = strtotime($todayDay->toDateString());
-    $dateTimestamp2 = strtotime($request->subscription_end);
+    $dateTimestamp2 = strtotime($user->subscription_end);
 
 
         if ($reserveTime >= $session->day) {
             $response = ['Sorry, you can reserve a session that it’s date is before today'];
+    
             return response($response, 200);
+  
         }
 
       //  if ($dateTimestamp1 <= $dateTimestamp2) {
       
+
+
+        $todayDay = Carbon::now();
+   
+ 
+
+        $dateTimestamp1 = strtotime($todayDay->toDateString());
+        $dateTimestamp2 = strtotime($user->subscription_end);
+    
+      
+        if ( $dateTimestamp1 > $dateTimestamp2)
+                    return response()->json([      'message' => 'Please renew your subscription'  ]);
+
+
 
             $reserve = new Reservation([
                 'reservation_at' => $reserveTime,
@@ -195,11 +243,11 @@ class TrainingController extends Controller
             ]);
             $reserve->save();
     
-            $response = [
-                'user' => $user,
-                'session' => $session,
-            ];
-            return response($response, 200);
+            return response()->json([
+                'message' => 'success'
+            ]);
+
+
      //   } else {
     //        $response = ['Please renew your subscription'];
      //       return response($response, 200);
@@ -207,10 +255,54 @@ class TrainingController extends Controller
     }
 
 
-    public function getReservationsForUser()
+    public function getReservations()
     {
-        $history_reservations=Reservation::select(DB::raw('training_sessions.name as training_session_name,training_sessions.day as training_session_date,Date(reservations.reservation_at
-        ) as reservation_date,Time(reservations.reservation_at) as reservation_time , users.name as name , users.email as email'))
+
+        $userRole = Auth::user()->getRoleNames();
+      
+        if ($userRole['0'] == 'admin') {
+
+
+            $history_reservations=Reservation::select(DB::raw('training_sessions.name as training_session_name,training_sessions.day as training_session_date,reservations.reservation_at
+            as reservation_date,reservations.reservation_at as reservation_time , users.name as name , users.email as email'))
+            ->join('users', 'users.id', '=', 'reservations.user_id')->join('training_sessions', 'training_sessions.id', '=', 'reservations.training_session_id')
+     
+           
+    
+            ->get();
+           
+           
+            return response()->json(
+                $history_reservations
+            );
+            }
+
+            if ($userRole['0'] == 'coach') {
+
+
+             
+             
+                $history_reservations=Reservation::select(DB::raw('training_sessions.name as training_session_name,training_sessions.day as training_session_date,reservations.reservation_at
+                as reservation_date,reservations.reservation_at as reservation_time , users.name as name , users.email as email'))
+                ->join('users', 'users.id', '=', 'reservations.user_id')->join('training_sessions', 'training_sessions.id', '=', 'reservations.training_session_id')
+                ->join('training_session_user', 'training_session_user.training_session_id ', '=', 'training_sessions.id')
+         
+            
+                ->where('training_session_user.user_id',Auth::user()->id)
+        
+                ->get();
+               
+               
+                return response()->json(
+                    $history_reservations
+                );
+                }
+
+        if ($userRole['0'] == 'user') {
+
+
+        $history_reservations=Reservation::select(DB::raw('training_sessions.name as training_session_name,training_sessions.day as training_session_date,reservations.reservation_at
+        as reservation_date,reservations.reservation_at as reservation_time , users.name as name , users.email as email'))
         ->join('users', 'users.id', '=', 'reservations.user_id')->join('training_sessions', 'training_sessions.id', '=', 'reservations.training_session_id')
  
         ->where('reservations.user_id',Auth::user()->id)
@@ -221,7 +313,7 @@ class TrainingController extends Controller
         return response()->json(
             $history_reservations
         );
-    
+        }
     }
     #=======================================================================================#
     #			                             update                                         #
@@ -240,19 +332,8 @@ class TrainingController extends Controller
 
         ]);
 
-        $validate_old_seesions = TrainingSession::where('day', '=', $request->day)->where("starts_at", "!=", null)->where("finishes_at", "!=", null)->where(function ($q) use ($request) {
-            $q->whereRaw("starts_at = '$request->starts_at' and finishes_at ='$request->finishes_at'")
-                ->orwhereRaw("starts_at < '$request->starts_at' and finishes_at > '$request->finishes_at'")
-                ->orwhereRaw("starts_at > '$request->starts_at' and starts_at < '$request->finishes_at'")
-                ->orwhereRaw("finishes_at > '$request->starts_at' and finishes_at < '$request->finishes_at'")
-                ->orwhereRaw("starts_at > '$request->starts_at' and finishes_at < '$request->finishes_at'");
-        })->where('id', '!=', $id)->get()->toArray();
-
-        if (count($validate_old_seesions) > 0)
- 
-            return response()->json(['message' => 'Time invalid']);
-
-        if (count(DB::select("select * from training_session_user where training_session_id = $id")) != 0) {
+    
+        if (count(DB::select("select * from reservations where training_session_id = $id")) != 0) {
            return response()->json(['message' => "You can't edit this session because there are users in it!"]);
 
         }
@@ -269,7 +350,9 @@ class TrainingController extends Controller
 
 
         ]);
-        return response()->json(['success' => 'Record Udated successfully!']);
+        return response()->json([
+            'message' => 'success'
+        ]);
     }
     #=======================================================================================#
     #			                             destroy                                       	#
@@ -278,14 +361,17 @@ class TrainingController extends Controller
     {
 
 
-        if (count(DB::select("select * from training_session_user where training_session_id = $id")) == 0) {
-            $trainingSession = TrainingSession::findorfail($id);
-            $trainingSession->delete();
-            return response()->json([
-                'success' => '1'
+        if (count(DB::select("select * from reservations where training_session_id = $id")) == 0) {
+         $trainingSession = TrainingSession::findorfail($id);
+
+           $trainingSession->delete();
+           return response()->json([
+                'message' => 'success'
             ]);
+
+
         } else {
-            return response()->json(['failed' => '0']);
+            return response()->json(['message' => 'error']);
         }
     }
 }

@@ -108,6 +108,8 @@ class CoachController extends Controller
     {
         $singleCoach = User::find($id);
         $singleCoach->delete();
-        return response()->json(['success' => 'Record deleted successfully!']);
+        return response()->json([
+            'message' => 'success'
+        ]);
     }
 }

@@ -18,11 +18,9 @@ class AuthController extends Controller
         $request->validate([
             'name' => 'required',
             'email' => 'required|email|unique:users',
-            'gender' => 'required',
-            'birth_date' => 'required',
-            'profile_image' => 'required|image|mimes:jpg,jpeg',
             'password' => 'required|min:6',
-            'password_confirmation' => 'required|same:password'
+            'password_confirmation' => 'required|same:password',
+            'device_name' => 'required',
         ]);
         if ($request->hasFile('profile_image')) {
             $image = $request->file('profile_image');
@@ -30,7 +28,7 @@ class AuthController extends Controller
             $destinationPath = public_path('/imgs');
             $image->move($destinationPath, $name);
             $imageName = 'imgs/' . $name;
-        }
+        }else $imageName = NULL;
         $user = new User([
             'name' => $request->name,
             'email' => $request->email,
@@ -42,11 +40,17 @@ class AuthController extends Controller
         $user->assignRole('user');
         $user->save();
 
-      //  $user->sendEmailVerificationNotification();
-        return response()->json([
-            'message' => 'Successfully created user!'
-        ], 201);
-        $user->notify(new WelcomeEmailNotification());
+
+    
+            $token = $user->createToken($request->device_name)->plainTextToken;
+            $response = [
+                'user' => $user,
+                'role' =>  $user->getRoleNames()['0'],
+                'token' => $token,
+            ];
+            return response($response, 200);
+    
+ 
     }
 
     public function signin(Request $request)
@@ -77,7 +81,7 @@ class AuthController extends Controller
     {
         Auth()->user()->tokens()->delete();
         return response()->json([
-            'message' => 'Successfully logged out'
+            'message' => 'success'
         ]);
     }
     public function updateProfile(Request $request)
@@ -121,7 +125,7 @@ class AuthController extends Controller
             $user->profile_image = $request->profile_image;
             $user->save();
             return response()->json([
-                'message' => 'Successfully update'
+                'message' => 'success'
             ]);
         }
     }
