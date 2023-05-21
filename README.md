@@ -1,5 +1,5 @@
 # Gym-Website
-A website built using Laravel for managing a Gym. With our application, users can book into a training session. Coaches can add their training sessions and get users who reserved to their sessions. The admin can check reservations, manage user sessions, coaches and Ban users.This web application is built using laravel.
+A website built using Laravel for managing a Gym. With our application, users can book into a training session. Coaches can add their training sessions and get users who reserved to their sessions. The admin can check reservations, manage user sessions, coaches and Ban users.
 - You can find also the code of a mobile application coded using java in "Android App".
 
 
