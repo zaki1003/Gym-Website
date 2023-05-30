@@ -6,17 +6,15 @@ A website built using Laravel for managing a Gym. With our application, users ca
 ## Screenshots
 ### Home
 
-![Screenshot from 2023-05-21 20-51-15](https://github.com/zaki1003/Gym-Website/assets/65148928/98005f31-992c-4671-8b52-8330271f1b5b)
 
+![1](https://github.com/zaki1003/Gym-Website/assets/65148928/69677398-9dc4-4cbc-9e8b-2a944e61be90)
 
 ### Dashboard
 
-![Screenshot from 2023-05-21 21-12-27](https://github.com/zaki1003/Gym-Website/assets/65148928/4f07b3d2-daf1-4001-81dd-1563ecc5dec8)
-![Screenshot from 2023-05-21 20-52-28](https://github.com/zaki1003/Gym-Website/assets/65148928/0e7a4b00-5705-4a38-aa8f-3343f860475e)
-![Screenshot from 2023-05-21 21-26-00](https://github.com/zaki1003/Gym-Website/assets/65148928/aba2c17f-2e49-48c6-b3cd-efefadc3601e)
-
-![Screenshot from 2023-05-21 21-24-51](https://github.com/zaki1003/Gym-Website/assets/65148928/c780076d-c8d3-463c-b638-c88999060134)
-
+![2](https://github.com/zaki1003/Gym-Website/assets/65148928/efd5fab6-8259-420e-832d-ac71959b4703)
+![3](https://github.com/zaki1003/Gym-Website/assets/65148928/e8b34b09-1ac9-48be-9e41-628f145cb9ce)
+![4](https://github.com/zaki1003/Gym-Website/assets/65148928/0df9e6f3-a1c3-40d7-839c-9083b449c4c5)
+![5](https://github.com/zaki1003/Gym-Website/assets/65148928/552cf19d-74bc-4a34-9e69-5059d0cada7c)
 
 
 
